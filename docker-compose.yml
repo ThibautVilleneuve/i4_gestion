@@ -4,7 +4,7 @@ services:
     image: mysql:5.7
     environment:
       - MYSQL_DATABASE=gestion_produits
-      - MYSQL_ROOT_PASSWORD= root
+      - MYSQL_ROOT_PASSWORD=root
     volumes:
       - ./database/:/docker-entrypoint-initdb.d
   minio1:
