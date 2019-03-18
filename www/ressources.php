@@ -5,7 +5,7 @@ require '../vendor/autoload.php';
 $s3 = new Aws\S3\S3Client([
     'version' => 'latest',
     'region'  => 'us-east-1',
-    'endpoint' => '0.0.0.0:9000',
+    'endpoint' => '0.0.0.0:9001',
     'use_path_style_endpoint' => true,
     'credentials' => [
         'key'    => 'minio',
