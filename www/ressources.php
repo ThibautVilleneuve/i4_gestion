@@ -1,11 +1,13 @@
 <?php
 
-require '../vendor/autoload.php';
+require 'vendor/autoload.php';
+
+const bucket_name = 'ressources';
 
 $s3 = new Aws\S3\S3Client([
     'version' => 'latest',
     'region'  => 'us-east-1',
-    'endpoint' => $minio.':9000',
+    'endpoint' => 'http://minio:9000',
     'use_path_style_endpoint' => true,
     'credentials' => [
         'key'    => 'minio',
@@ -14,19 +16,29 @@ $s3 = new Aws\S3\S3Client([
 ]);
 
 
-// Send a PutObject request and get the result object.
-$insert = $s3->putObject([
-    'Bucket' => 'testbucket',
-    'Key'    => 'testkey',
-    'Body'   => 'Hello from Minio!!'
-]);
-
-$retrive = $s3->getObject([
-    'Bucket' => 'testbucket',
-    'Key'    => 'testkey',
-    'SaveAs' => 'testkey_local'
-]);
-
-echo $retrive['Body'];
+function download($client, $key)
+{
+    $output = $client->getObject([
+        'Bucket' => bucket_name,
+        'Key' => $key,
+        'SaveAs' => $key . '_local'
+    ]);
+    return $output['Body'];
+}
+function upload($client, $key, $path)
+{
+    $client->putObject([
+        'Bucket' => bucket_name,
+        'Key' => $key,
+        'Body' => fopen($path, 'r'),
+    ]);
+}
+function delete($client, $key)
+{
+    $client->deleteObject([
+        'Bucket' => bucket_name,
+        'Key' => $key,
+    ]);
+}
 
 ?>
