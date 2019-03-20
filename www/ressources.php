@@ -25,6 +25,7 @@ function download($client, $key)
     ]);
     return $output['Body'];
 }
+
 function upload($client, $key, $path)
 {
     $client->putObject([
@@ -33,6 +34,7 @@ function upload($client, $key, $path)
         'Body' => fopen($path, 'r'),
     ]);
 }
+
 function delete($client, $key)
 {
     $client->deleteObject([

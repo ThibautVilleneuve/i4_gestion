@@ -7,7 +7,7 @@ services:
       - MYSQL_ROOT_PASSWORD=root
     volumes:
       - ./database/:/docker-entrypoint-initdb.d
-  minio1:
+  minio:
     command: "server /export"
     environment:
       MINIO_ACCESS_KEY: minio
@@ -21,7 +21,7 @@ services:
       - "8080:80"
     depends_on:
       - db
-      - minio1
+      - minio
     environment:
       MYSQL_HOST: db
       MYSQL_ROOT_PASSWORD: 'root'
