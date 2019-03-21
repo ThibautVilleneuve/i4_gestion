@@ -4,7 +4,9 @@ require 'vendor/autoload.php';
 
 const bucket_name = 'ressources';
 
-$s3 = new Aws\S3\S3Client([
+function build_storage_client()
+{
+ $s3 = new Aws\S3\S3Client([
     'version' => 'latest',
     'region'  => 'us-east-1',
     'endpoint' => 'http://minio:9000',
@@ -13,8 +15,8 @@ $s3 = new Aws\S3\S3Client([
         'key'    => 'minio',
         'secret' => 'minio123',
     ],
-]);
-
+ ]);
+}
 
 function download($client, $key)
 {
