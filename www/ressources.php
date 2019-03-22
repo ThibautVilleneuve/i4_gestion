@@ -4,9 +4,9 @@ require 'vendor/autoload.php';
 
 const bucket_name = 'ressources';
 
-function build_storage_client()
-{
- $s3 = new Aws\S3\S3Client([
+use Aws\S3\S3Client;
+
+$s3 = new Aws\S3\S3Client([
     'version' => 'latest',
     'region'  => 'us-east-1',
     'endpoint' => 'http://minio:9000',
@@ -15,34 +15,43 @@ function build_storage_client()
         'key'    => 'minio',
         'secret' => 'minio123',
     ],
- ]);
+]);
+
+if (!$s3->doesBucketExist(bucket_name)) {
+        $s3->createBucket([
+            'Bucket' => bucket_name
+]);
 }
 
-function download($client, $key)
+function download($key)
 {
-    $output = $client->getObject([
+    global $s3;
+    return $s3->getObject([
         'Bucket' => bucket_name,
         'Key' => $key,
-        'SaveAs' => $key . '_local'
     ]);
     return $output['Body'];
 }
 
-function upload($client, $key, $path)
+
+function upload($key, $path)
 {
-    $client->putObject([
+    global $s3;
+    return $s3->putObject([
         'Bucket' => bucket_name,
         'Key' => $key,
-        'Body' => fopen($path, 'r'),
+        'Body' => $path
     ]);
 }
 
-function delete($client, $key)
+function delete($key)
 {
-    $client->deleteObject([
+    global $s3;
+    return $s3->deleteObject([
         'Bucket' => bucket_name,
         'Key' => $key,
     ]);
 }
 
 ?>
+

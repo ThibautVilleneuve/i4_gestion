@@ -2,6 +2,7 @@
     session_start();
     include 'connect.php';
     include 'fonctions.php';
+    include 'ressources.php';
     secu();
 
     if (!isset($_GET['id']) or $_GET['id'] == '') {
@@ -46,7 +47,7 @@
         <div class="description">
             <?php echo nl2br($produit['PRO_description']); ?>
         </div>
-        
+
 
         <?php
             $sql = "SELECT * FROM ressources WHERE PRO_id = $PRO_id";
@@ -62,7 +63,8 @@
             <?php
                 foreach($ressources as $ressource) {
                     if ($ressource['RE_type'] == 'img') {
-                        echo '<img src="'.$ressource['RE_url'].'" class="img-thumbnail thumb" data-id="'.$ressource['RE_id'].'">';
+                        $image = base64_encode(download($ressource['RE_url'])['Body']);
+                        echo '<img src="data:image;base64,'.$image.'" class="img-thumbnail thumb" data-id="'.$ressource['RE_id'].'">';
                     }
                 }
             ?>
@@ -82,3 +84,4 @@
     </div>
 </body>
 </html>
+

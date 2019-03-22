@@ -1,6 +1,8 @@
 <?php
+
 include 'connect.php';
 include 'ressources.php';
+
 function upload_files($PRO_id, $link)
 {
     foreach ($_FILES["PRO_ressources"]["error"] as $key => $error) {
@@ -9,8 +11,8 @@ function upload_files($PRO_id, $link)
             $extension = pathinfo($_FILES["PRO_ressources"]["name"][$key], PATHINFO_EXTENSION);
             $md5 = md5_file($tmp_name);
             $name = $md5 . "." . $extension;
-            $client = build_storage_client();
-            upload($client, $name, $tmp_name);
+            $content = file_get_contents($tmp_name);
+            upload($name, $content);
             $sql = "INSERT INTO ressources (RE_type,RE_url,PRO_id) VALUES ('img', '$name', $PRO_id)";
             mysqli_query($link, $sql);
         }
@@ -20,8 +22,7 @@ function delete_file($RE_id, $link, $key)
 {
     $sql = "DELETE FROM ressources WHERE RE_id = '$RE_id'";
     if (mysqli_query($link, $sql)) {
-        $client = build_storage_client();
-        delete($client, $key);
+        delete($key);
     }
 }
 $action = (isset($_POST['action'])) ? $_POST['action'] : $_GET['action'];
@@ -96,3 +97,4 @@ switch ($action) {
         break;
 }
 ?>
+
