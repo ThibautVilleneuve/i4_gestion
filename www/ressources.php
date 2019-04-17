@@ -9,7 +9,7 @@ use Aws\S3\S3Client;
 $s3 = new Aws\S3\S3Client([
     'version' => 'latest',
     'region'  => 'us-east-1',
-    'endpoint' => 'http://minio:9000',
+    'endpoint' => 'http://192.168.99.100:31675',
     'use_path_style_endpoint' => true,
     'credentials' => [
         'key'    => 'minio',
@@ -53,5 +53,4 @@ function delete($key)
     ]);
 }
 
-?>
 
