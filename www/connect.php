@@ -1,5 +1,5 @@
 <?php
-    $host = "db";
+    $host = "192.168.99.100:32595";
     $username = "root";
     $password = "root";
     $db = "gestion_produits";
